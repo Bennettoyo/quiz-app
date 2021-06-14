@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { HttpService } from './http.service';
+import { HttpService } from './services/http.service';
 
 @Component({
   selector: 'app-root',
@@ -14,27 +14,14 @@ export class AppComponent {
   constructor(public httpService: HttpService) { }
 
   ngOnInit() {
-    this.getQuizData();
+    // this.getQuizData();
   }
 
-  getQuizData() {
-    this.httpService.get("quiz/getQuizzes").subscribe((rs: any) => {
-      this.quizData = rs;
-    }, (err) => {
-      console.log(err);
-    });
-  }
-
-  newQuiz() {
-    this.httpService.post("quiz/createQuiz", { QuizName: this.quizName, Status: 1 }).subscribe((rs: any) => {
-      if (rs == 1) {
-        this.getQuizData();
-        console.log("Success")
-      } else {
-        console.log("Error")
-      }
-    }, (err: any) => {
-      console.log("Error")
-    });
-  }
+  // getQuizData() {
+  //   this.httpService.get("quiz/getQuizzes").subscribe((rs: any) => {
+  //     this.quizData = rs;
+  //   }, (err) => {
+  //     console.log(err);
+  //   });
+  // }
 }

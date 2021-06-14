@@ -1,0 +1,40 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{my_modal_title}}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <img class="random-modal-img" src="https://picsum.photos/400" alt="">
+        <div class="col-12">
+            <div class="form-group">
+                <label for="FormControlInput1">Quiz Name</label>
+                <input type="email" class="form-control" id="FormControlInput1" placeholder="Enter quiz name">
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                <label for="FormControlInput2">Quiz Description</label>
+                <textarea class="form-control" rows="3" id="FormControlInput2"
+                    placeholder="Enter quiz description"></textarea>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                <label for="FormControlSelect1">Type of Quiz</label>
+                <select multiple class="form-control" id="FormControlSelect1">
+                    <!-- ADD MORE SUBJECTS -->
+                    <option>Maths</option>
+                    <option>English</option>
+                    <option>ICT</option>
+                    <option>PE</option>
+                    <option>Science</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div>
