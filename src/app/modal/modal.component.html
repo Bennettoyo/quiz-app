@@ -6,35 +6,46 @@
 </div>
 <div class="modal-body">
     <div class="row">
-        <img class="random-modal-img" src="https://picsum.photos/400" alt="">
+        <img class="random-modal-img" src="{{quizPic}}" alt="">
         <div class="col-12">
             <div class="form-group">
                 <label for="FormControlInput1">Quiz Name</label>
-                <input type="email" class="form-control" id="FormControlInput1" placeholder="Enter quiz name">
+                <input type="email" class="form-control" id="FormControlInput1" placeholder="Enter quiz name"
+                    [(ngModel)]="quizName" maxlength="50">
+                <!-- <p>{{quizName.length}}/50</p> -->
             </div>
         </div>
         <div class="col-12">
             <div class="form-group">
                 <label for="FormControlInput2">Quiz Description</label>
-                <textarea class="form-control" rows="3" id="FormControlInput2"
-                    placeholder="Enter quiz description"></textarea>
+                <textarea class="form-control" rows="3" id="FormControlInput2" placeholder="Enter quiz description"
+                    [(ngModel)]="quizDesc" maxlength="150"></textarea>
+                <!-- <p>{{quizDesc.length}}/150</p> -->
             </div>
         </div>
         <div class="col-12">
             <div class="form-group">
                 <label for="FormControlSelect1">Type of Quiz</label>
-                <select multiple class="form-control" id="FormControlSelect1">
+                <select class="form-control" id="FormControlSelect1" [(ngModel)]="quizType">
                     <!-- ADD MORE SUBJECTS -->
-                    <option>Maths</option>
-                    <option>English</option>
-                    <option>ICT</option>
-                    <option>PE</option>
-                    <option>Science</option>
+                    <option value="1">English</option>
+                    <option value="2">Maths</option>
+                    <option value="3">Science</option>
+                    <option value="4">ICT</option>
+                    <option value="5">History</option>
+                    <option value="6">Physical Education</option>
+                    <option value="7">Geography</option>
+                    <option value="8">Foreign Languages</option>
+                    <option value="9">Design & Technology</option>
+                    <option value="10">Art & Design</option>
+                    <option value="11">Music</option>
                 </select>
             </div>
         </div>
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+    <button *ngIf="isEdit" type="button" class="btn btn-outline-dark" (click)="deleteQuiz()">Delete</button>
+    <button *ngIf="isEdit" type="button" class="btn btn-outline-dark" (click)="editQuiz()">Save</button>
+    <button *ngIf="!isEdit" type="button" class="btn btn-outline-dark" (click)="saveNewQuiz()">Next</button>
 </div>

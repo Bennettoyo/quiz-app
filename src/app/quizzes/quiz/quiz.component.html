@@ -1,13 +1,12 @@
-<div class="card" style="width: 18rem;">
+<div class="card m-20">
     <img class="card-img-top" src="{{element.Image}}" alt="Card image cap">
-    <div class="card-body h-100">
+    <div class="card-body card-body-height">
         <h5 class="card-title">{{element.QuizName}}</h5>
         <p class="card-text">{{element.Description}}</p>
         <!-- Show depending on what permission there is -->
-        <a href="#" class="btn btn-primary white">View <i class="far fa-eye"></i></a>
-        <a (click)="editQuiz()" class="btn btn-primary white">Edit <i class="far fa-edit"></i></a>
     </div>
-    <!-- <div class="card-footer">
-        <small class="text-muted">Last updated 3 mins ago</small>
-    </div> -->
+    <div class="card-footer">
+        <a href="#" class="btn btn-primary white">View <i class="far fa-eye"></i></a>
+        <a (click)="editQuiz()" class="btn btn-primary white float-right">Edit <i class="far fa-edit"></i></a>
+    </div>
 </div>

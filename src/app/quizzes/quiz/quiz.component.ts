@@ -7,7 +7,14 @@ import { ModalService } from 'src/app/services/modal.service';
   styleUrls: ['./quiz.component.css']
 })
 export class QuizComponent implements OnInit {
-  @Input('quizElement') element: { QuizName: string, QuizType: string, Status: number, Image: string, Description: string };
+  @Input('quizElement') element: {
+    ID: number,
+    QuizName: string,
+    QuizType: string,
+    Status: number,
+    Image: string,
+    Description: string
+  };
 
   constructor(public modalsService: ModalService) { }
 
@@ -15,6 +22,6 @@ export class QuizComponent implements OnInit {
   }
 
   editQuiz() {
-    this.modalsService.editModal();
+    this.modalsService.editModal(this.element);
   }
 }
