@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../services/modal.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -19,6 +20,12 @@ export class ModalComponent {
   @Input() my_modal_content;
   @Input() isEdit = false;
 
+  popoverTitle = 'Are you sure you want to delete?';
+  popoverMessage = 'This cannot be undone. All questions will be deleted too.';
+  confirmClicked = false;
+  cancelClicked = false;
+
+
   educational_images = [
     // USE A FILTER FILL IN REST
     { name: '1', img: './assets/education-img/english.jpg' },
@@ -34,35 +41,57 @@ export class ModalComponent {
     { name: '11', img: './assets/education-img/music.jpg' },
   ];
 
-  constructor(public activeModal: NgbActiveModal, public modalsService: ModalService) { }
+  constructor(public activeModal: NgbActiveModal, public modalsService: ModalService, private toastr: ToastrService) { }
 
   ngOnInit() {
   }
 
   saveNewQuiz() {
-    this.getImage();
-    this.activeModal.close('Close click')
-    this.quizDataObject = {
-      quizPic: this.quizPic,
-      quizName: this.quizName,
-      quizDesc: this.quizDesc,
-      quizType: this.quizType
+    if (
+      this.undefinedOrEmpty(this.quizName) &&
+      this.undefinedOrEmpty(this.quizDesc) &&
+      this.undefinedOrEmpty(this.quizType)) {
+      this.getImage();
+      this.activeModal.close('Close click')
+      this.quizDataObject = {
+        quizPic: this.quizPic,
+        quizName: this.quizName,
+        quizDesc: this.quizDesc,
+        quizType: this.quizType
+      }
+      this.modalsService.getModalData(this.quizDataObject);
+    } else {
+      this.toastr.error('Please fill in all inputs!', 'Error!');
     }
-    this.modalsService.getModalData(this.quizDataObject);
+  }
+
+  undefinedOrEmpty(input) {
+    if (input != "" && input != undefined) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   editQuiz() {
-    this.getImage();
-    this.activeModal.close('Close click')
-    this.quizDataObject = {
-      ID: this.ID,
-      quizPic: this.quizPic,
-      quizName: this.quizName,
-      quizDesc: this.quizDesc,
-      quizType: this.quizType,
-      isEdit: true
+    if (
+      this.undefinedOrEmpty(this.quizName) &&
+      this.undefinedOrEmpty(this.quizDesc) &&
+      this.undefinedOrEmpty(this.quizType)) {
+      this.getImage();
+      this.activeModal.close('Close click')
+      this.quizDataObject = {
+        ID: this.ID,
+        quizPic: this.quizPic,
+        quizName: this.quizName,
+        quizDesc: this.quizDesc,
+        quizType: this.quizType,
+        isEdit: true
+      }
+      this.modalsService.getModalData(this.quizDataObject);
+    } else {
+      this.toastr.error('Please fill in all inputs!', 'Error!');
     }
-    this.modalsService.getModalData(this.quizDataObject);
   }
 
   deleteQuiz() {

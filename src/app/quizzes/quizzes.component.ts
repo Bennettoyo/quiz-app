@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../services/http.service';
 import { ModalService } from '../services/modal.service';
 import { Router } from "@angular/router";
+import { ToastrService } from 'ngx-toastr';
+
 
 
 @Component({
@@ -12,8 +14,12 @@ import { Router } from "@angular/router";
 export class QuizzesComponent implements OnInit {
   quizzes = [];
   quizDataForm: any = {};
+  public LoggedIn: any = false;
+  public adminAccess: any = false;
+  public teacherAccess: any = false;
+  public studentAccess: any = false;
 
-  constructor(public httpService: HttpService, public modalsService: ModalService, private router: Router) { }
+  constructor(public httpService: HttpService, public modalsService: ModalService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.modalsService.modalData$.subscribe(
@@ -29,6 +35,7 @@ export class QuizzesComponent implements OnInit {
         }
       }
     )
+    this.checkAccess();
     this.getQuizData();
   }
 
@@ -37,11 +44,20 @@ export class QuizzesComponent implements OnInit {
   }
 
   getQuizData() {
-    this.httpService.get("quiz/getQuizzes").subscribe((rs: any) => {
-      this.quizzes = rs;
-    }, (err) => {
-      console.log(err);
-    });
+    if (this.studentAccess || this.teacherAccess) {
+      this.httpService.get("quiz/getCompletedQuizzes").subscribe((rs: any) => {
+        this.quizzes = rs;
+      }, (err) => {
+        this.toastr.error('Unable to get data!', 'Error!');
+      });
+    } else {
+      this.httpService.get("quiz/getQuizzes").subscribe((rs: any) => {
+        this.quizzes = rs;
+      }, (err) => {
+        this.toastr.error('Unable to get data!', 'Error!');
+      });
+
+    }
   }
 
 
@@ -55,10 +71,11 @@ export class QuizzesComponent implements OnInit {
     }).subscribe((rs: any) => {
       // console.log(rs);
       sessionStorage.setItem("quizID", rs);
+      this.toastr.success('Your quiz has now been added! Make sure to now fill out all the questions and answers.', 'Success!');
       this.getQuizData();
       this.goQuestions();
     }, (err: any) => {
-      console.log("Error")
+      this.toastr.error('Unable to get data!', 'Error!');
     });
   }
 
@@ -73,12 +90,12 @@ export class QuizzesComponent implements OnInit {
     }).subscribe((rs: any) => {
       if (rs == 1) {
         this.getQuizData();
-        console.log("Success")
+        this.toastr.success('Your quiz has now been edited!', 'Success!');
       } else {
-        console.log("Error")
+        this.toastr.error('Unable to edit!', 'Error!');
       }
     }, (err: any) => {
-      console.log("Error")
+      this.toastr.error('Unable to edit!', 'Error!');
     });
   }
 
@@ -88,13 +105,40 @@ export class QuizzesComponent implements OnInit {
     }).subscribe((rs: any) => {
       if (rs == 1) {
         this.getQuizData();
-        console.log("Success")
+        this.toastr.success('Your quiz has now been deleted!', 'Success!');
       } else {
-        console.log("Error")
+        this.toastr.error('Unable to delete!', 'Error!');
       }
     }, (err: any) => {
-      console.log("Error")
+      this.toastr.error('Unable to delete!', 'Error!');
     });
+  }
+
+  checkAccess() {
+    let isAdmin = localStorage.getItem("admin");
+    let isTeacher = localStorage.getItem("teacher");
+    let isStudent = localStorage.getItem("student");
+    let isLoggedin = localStorage.getItem("LoggedIn");
+    if (isLoggedin == "true") {
+      this.LoggedIn = true;
+    } else {
+      this.LoggedIn = false;
+    }
+    if (isAdmin == "true") {
+      this.adminAccess = true;
+    } else {
+      this.adminAccess = false;
+    }
+    if (isTeacher == "true") {
+      this.teacherAccess = true;
+    } else {
+      this.teacherAccess = false;
+    }
+    if (isStudent == "true") {
+      this.studentAccess = true;
+    } else {
+      this.studentAccess = false;
+    }
   }
 
 }

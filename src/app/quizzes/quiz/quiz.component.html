@@ -6,7 +6,13 @@
         <!-- Show depending on what permission there is -->
     </div>
     <div class="card-footer">
-        <a href="#" class="btn btn-primary white">View <i class="far fa-eye"></i></a>
-        <a (click)="editQuiz()" class="btn btn-primary white float-right">Edit <i class="far fa-edit"></i></a>
+        <a *ngIf="adminAccess" (click)="viewandEditQuiz(element.ID)" class="btn btn-primary white">Edit Questions
+            <i class="far fa-eye"></i></a>
+        <a *ngIf="adminAccess" (click)="editQuiz()" class="btn btn-primary white float-right">Edit <i
+                class="far fa-edit"></i></a>
+        <a *ngIf="teacherAccess" (click)="viewandEditQuiz(element.ID)" class="btn btn-primary white">Questions & Answers
+            <i class="far fa-eye"></i></a>
+        <a *ngIf="studentAccess" (click)="viewandEditQuiz(element.ID)" class="btn btn-primary white">Answer Questions
+            <i class="fas fa-running"></i></a>
     </div>
 </div>

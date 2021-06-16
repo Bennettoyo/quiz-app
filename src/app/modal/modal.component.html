@@ -45,7 +45,9 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button *ngIf="isEdit" type="button" class="btn btn-outline-dark" (click)="deleteQuiz()">Delete</button>
-    <button *ngIf="isEdit" type="button" class="btn btn-outline-dark" (click)="editQuiz()">Save</button>
-    <button *ngIf="!isEdit" type="button" class="btn btn-outline-dark" (click)="saveNewQuiz()">Next</button>
+    <button *ngIf="isEdit" type="button" class="btn btn-outline-danger" mwlConfirmationPopover
+        [popoverTitle]="popoverTitle" [popoverMessage]="popoverMessage" placement="left" (confirm)="deleteQuiz()"
+        (cancel)="cancelClicked = true">Delete</button>
+    <button *ngIf="isEdit" type="button" class="btn btn-outline-success" (click)="editQuiz()">Save</button>
+    <button *ngIf="!isEdit" type="button" class="btn btn-outline-primary" (click)="saveNewQuiz()">Next</button>
 </div>

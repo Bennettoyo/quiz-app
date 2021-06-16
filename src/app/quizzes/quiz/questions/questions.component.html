@@ -8,34 +8,45 @@
                 </a>
             </li>
             <li>
-                <a (click)="setQuestionNumber(1)">Question 1</a>
+                <a [ngClass]="questionNumber == 1 ? 'sidebar-item-selected' : ''"
+                    (click)="setQuestionNumber(1)">Question
+                    1</a>
             </li>
             <li>
-                <a (click)="setQuestionNumber(2)">Question 2</a>
+                <a [ngClass]="questionNumber == 2 ? 'sidebar-item-selected' : ''"
+                    (click)="setQuestionNumber(2)">Question 2</a>
             </li>
             <li>
-                <a (click)="setQuestionNumber(3)">Question 3</a>
+                <a [ngClass]="questionNumber == 3 ? 'sidebar-item-selected' : ''"
+                    (click)="setQuestionNumber(3)">Question 3</a>
             </li>
             <li>
-                <a (click)="setQuestionNumber(4)">Question 4</a>
+                <a [ngClass]="questionNumber == 4 ? 'sidebar-item-selected' : ''"
+                    (click)="setQuestionNumber(4)">Question 4</a>
             </li>
             <li>
-                <a (click)="setQuestionNumber(5)">Question 5</a>
+                <a [ngClass]="questionNumber == 5 ? 'sidebar-item-selected' : ''"
+                    (click)="setQuestionNumber(5)">Question 5</a>
             </li>
             <li>
-                <a (click)="setQuestionNumber(6)">Question 6</a>
+                <a [ngClass]="questionNumber == 6 ? 'sidebar-item-selected' : ''"
+                    (click)="setQuestionNumber(6)">Question 6</a>
             </li>
             <li>
-                <a (click)="setQuestionNumber(7)">Question 7</a>
+                <a [ngClass]="questionNumber == 7 ? 'sidebar-item-selected' : ''"
+                    (click)="setQuestionNumber(7)">Question 7</a>
             </li>
             <li>
-                <a (click)="setQuestionNumber(8)">Question 8</a>
+                <a [ngClass]="questionNumber == 8 ? 'sidebar-item-selected' : ''"
+                    (click)="setQuestionNumber(8)">Question 8</a>
             </li>
             <li>
-                <a (click)="setQuestionNumber(9)">Question 9</a>
+                <a [ngClass]="questionNumber == 9 ? 'sidebar-item-selected' : ''"
+                    (click)="setQuestionNumber(9)">Question 9</a>
             </li>
             <li>
-                <a (click)="setQuestionNumber(10)">Question 10</a>
+                <a [ngClass]="questionNumber == 10 ? 'sidebar-item-selected' : ''"
+                    (click)="setQuestionNumber(10)">Question 10</a>
             </li>
         </ul>
     </div>
@@ -50,50 +61,76 @@
                     <p>{{quizDescription}}</p>
                     <h3 class="m-t-50">Question {{questionNumber}}</h3>
                     <div class="mb-3">
-                        <label for="FormControlInput" class="form-label">Question</label>
-                        <input type="text" class="form-control" id="FormControlInput" [(ngModel)]="question">
+                        <ng-container *ngIf="adminAccess">
+                            <label for="FormControlInput" class="form-label">Question:</label>
+                            <input type="text" class="form-control" id="FormControlInput" [(ngModel)]="question">
+                        </ng-container>
+                        <h5 class="m-t-50" *ngIf="teacherAccess || studentAccess">{{question}}</h5>
                     </div>
-                    <div class="mb-3">
+                    <div *ngIf="firstAnswer != '' || adminAccess" class="mb-3">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="customCheck1"
-                                [(ngModel)]="isFirstAnswerCorrect">
-                            <label class="custom-control-label darkgray" for="customCheck1">Please fill in answer input
+                            <input [disabled]="teacherAccess" type="checkbox" class="custom-control-input"
+                                id="customCheck1" [(ngModel)]="isFirstAnswerCorrect">
+                            <label *ngIf="adminAccess" class="custom-control-label darkgray" for="customCheck1">Please
+                                fill in answer input
                                 and tick
                                 if correct answer.</label>
-                            <input type="text" class="form-control" [(ngModel)]="firstAnswer">
+                            <label *ngIf="teacherAccess || studentAccess" class="custom-control-label darkgray"
+                                for="customCheck1">{{firstAnswer}}</label>
+                            <input *ngIf="adminAccess" type="text" class="form-control" [(ngModel)]="firstAnswer">
                         </div>
                     </div>
-                    <div class="mb-3">
+                    <div *ngIf="secondAnswer != '' || adminAccess" class="mb-3">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="customCheck2"
-                                [(ngModel)]="isSecondAnswerCorrect">
-                            <label class="custom-control-label darkgray" for="customCheck2">Please fill in answer input
+                            <input [disabled]="teacherAccess" type="checkbox" class="custom-control-input"
+                                id="customCheck2" [(ngModel)]="isSecondAnswerCorrect">
+                            <label *ngIf="adminAccess" class="custom-control-label darkgray" for="customCheck2">Please
+                                fill in answer input
                                 and tick
                                 if correct answer.</label>
-                            <input type="text" class="form-control" [(ngModel)]="secondAnswer">
+                            <label *ngIf="teacherAccess || studentAccess" class="custom-control-label darkgray"
+                                for="customCheck2">{{secondAnswer}}</label>
+                            <input *ngIf="adminAccess" type="text" class="form-control" [(ngModel)]="secondAnswer">
                         </div>
                     </div>
-                    <div class="mb-3">
+                    <div *ngIf="thirdAnswer != '' || adminAccess" class="mb-3">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="customCheck3"
-                                [(ngModel)]="isThirdAnswerCorrect">
-                            <label class="custom-control-label darkgray" for="customCheck3">Please fill in answer input
+                            <input [disabled]="teacherAccess" type="checkbox" class="custom-control-input"
+                                id="customCheck3" [(ngModel)]="isThirdAnswerCorrect">
+                            <label *ngIf="adminAccess" class="custom-control-label darkgray" for="customCheck3">Please
+                                fill in answer input
                                 and tick
                                 if correct answer.</label>
-                            <input type="text" class="form-control" [(ngModel)]="thirdAnswer">
+                            <label *ngIf="teacherAccess || studentAccess" class="custom-control-label darkgray"
+                                for="customCheck3">{{thirdAnswer}}</label>
+                            <input *ngIf="adminAccess" type="text" class="form-control" [(ngModel)]="thirdAnswer">
                         </div>
                     </div>
-                    <div class="mb-3">
+                    <div *ngIf="fourthAnswer != '' || adminAccess" class="mb-3">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="customCheck4"
-                                [(ngModel)]="isFourthAnswerCorrect">
-                            <label class="custom-control-label darkgray" for="customCheck4">Please fill in answer input
+                            <input [disabled]="teacherAccess" type="checkbox" class="custom-control-input"
+                                id="customCheck4" [(ngModel)]="isFourthAnswerCorrect">
+                            <label *ngIf="adminAccess" class="custom-control-label darkgray" for="customCheck4">Please
+                                fill in answer input
                                 and tick
                                 if correct answer.</label>
-                            <input type="text" class="form-control" [(ngModel)]="fourthAnswer">
+                            <label *ngIf="teacherAccess || studentAccess" class="custom-control-label darkgray"
+                                for="customCheck4">{{fourthAnswer}}</label>
+                            <input *ngIf="adminAccess" type="text" class="form-control" [(ngModel)]="fourthAnswer">
                         </div>
                     </div>
-                    <button (click)="newQuestionAndAnswers()" class="btn btn-success float-right">Save</button>
+                    <ng-container *ngIf="adminAccess">
+                        <button *ngIf="!finalQuestion" (click)="newQuestionAndAnswers()"
+                            class="btn btn-success float-right">Save & Continue</button>
+                        <button *ngIf="finalQuestion" (click)="adminCompletedQuiz()"
+                            class="btn btn-success float-right">Complete</button>
+                    </ng-container>
+                    <ng-container *ngIf="studentAccess || teacherAccess">
+                        <button *ngIf="!finalQuestion" (click)="teacherAndStudentNextQuestion()"
+                            class="btn btn-success float-right">Next</button>
+                        <button *ngIf="finalQuestion" (click)="completedQuiz()"
+                            class="btn btn-success float-right">Complete</button>
+                    </ng-container>
                 </div>
             </div>
         </div>

@@ -1,4 +1,8 @@
+@import '~ngx-toastr/toastr';
+
+
 /* GLOBAL STYLES */
+
 .white {
     color: white !important;
 }
@@ -24,6 +28,7 @@ margin-top: 50px;
 }
 
 
+
 /* BOOTSTRAP CARDS */
 .card-img-top {
     width: 100%;
@@ -47,11 +52,6 @@ margin-top: 50px;
 
 
 /* SIDEBAR */
-/*!
- * Start Bootstrap - Simple Sidebar (https://startbootstrap.com/)
- * Copyright 2013-2016 Start Bootstrap
- * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
- */
 
  body {
     overflow-x: hidden;
@@ -132,6 +132,10 @@ margin-top: 50px;
     text-decoration: none;
     color: #fff;
     background: rgba(255,255,255,0.2);
+}
+
+.sidebar-item-selected {
+    background: rgba(218, 217, 217, 0.2);
 }
 
 .sidebar-nav li a:active,
