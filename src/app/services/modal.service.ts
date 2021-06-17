@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { ModalComponent } from '../modal/modal.component';
 
 
@@ -8,10 +8,12 @@ import { ModalComponent } from '../modal/modal.component';
   providedIn: 'root'
 })
 export class ModalService {
-  private modalDataSource = new Subject<string>();
+  private modalDataSource: any = new Subject<string>();
   modalData$ = this.modalDataSource.asObservable();
 
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal) {
+    // this.modalData$ = this.modalDataSource.asObservable();
+  }
 
   addModal() {
     const modalRef = this.modalService.open(ModalComponent);
@@ -31,7 +33,14 @@ export class ModalService {
   }
 
   getModalData(object) {
+    // debugger;
+    // this.modalData$ = of(<any>[]);
     this.modalDataSource.next(object);
+    this.modalData$.source.observers = [];
+    // this.modalData$.source.observers += this.modalDataSource;
+    // this.modalDataSource = new Subject<string>();
+    // this.modalData$ = this.modalDataSource.asObservable();
+    // console.log(this.modalData$)
   }
 
 

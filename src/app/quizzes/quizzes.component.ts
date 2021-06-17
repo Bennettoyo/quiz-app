@@ -3,6 +3,7 @@ import { HttpService } from '../services/http.service';
 import { ModalService } from '../services/modal.service';
 import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
+import { StorageService } from '../services/storage.service';
 
 
 
@@ -18,10 +19,15 @@ export class QuizzesComponent implements OnInit {
   public adminAccess: any = false;
   public teacherAccess: any = false;
   public studentAccess: any = false;
+  public isSmallerDevice: any = false;
 
-  constructor(public httpService: HttpService, public modalsService: ModalService, private router: Router, private toastr: ToastrService) { }
+  constructor(public httpService: HttpService, public modalsService: ModalService, private router: Router, private toastr: ToastrService, public storageService: StorageService) { }
 
   ngOnInit(): void {
+    let windowWidth = window.innerWidth;
+    if (windowWidth < 1100) {
+      this.isSmallerDevice = true;
+    }
     this.modalsService.modalData$.subscribe(
       object => {
         if (object)
@@ -41,6 +47,14 @@ export class QuizzesComponent implements OnInit {
 
   goQuestions() {
     this.router.navigate(["questions"]);
+  }
+
+  deletedQuiz() {
+    setTimeout(function () { location.reload(); }, 500);
+  }
+
+  editedQuiz() {
+    setTimeout(function () { location.reload(); }, 500);
   }
 
   getQuizData() {
@@ -69,13 +83,18 @@ export class QuizzesComponent implements OnInit {
       Image: this.quizDataForm.quizPic,
       Status: 1
     }).subscribe((rs: any) => {
+      debugger;
       // console.log(rs);
-      sessionStorage.setItem("quizID", rs);
-      this.toastr.success('Your quiz has now been added! Make sure to now fill out all the questions and answers.', 'Success!');
-      this.getQuizData();
-      this.goQuestions();
+      if (rs != 0) {
+        this.storageService.setSessionStorage("quizID", rs);
+        this.toastr.success('Your quiz has now been added! Make sure to now fill out all the questions and answers.', 'Success!');
+        this.getQuizData();
+        this.goQuestions();
+      } else {
+        this.toastr.error('Quiz name already taken.', 'Error!');
+      }
     }, (err: any) => {
-      this.toastr.error('Unable to get data!', 'Error!');
+      this.toastr.error('Error!');
     });
   }
 
@@ -89,8 +108,9 @@ export class QuizzesComponent implements OnInit {
       Status: 1
     }).subscribe((rs: any) => {
       if (rs == 1) {
-        this.getQuizData();
+        // this.getQuizData();
         this.toastr.success('Your quiz has now been edited!', 'Success!');
+        this.editedQuiz();
       } else {
         this.toastr.error('Unable to edit!', 'Error!');
       }
@@ -100,12 +120,14 @@ export class QuizzesComponent implements OnInit {
   }
 
   deleteQuiz() {
+    console.log("called in quizzes component once")
     this.httpService.post("quiz/DeleteQuiz", {
       ID: this.quizDataForm.ID,
     }).subscribe((rs: any) => {
       if (rs == 1) {
-        this.getQuizData();
+        // this.getQuizData();
         this.toastr.success('Your quiz has now been deleted!', 'Success!');
+        this.deletedQuiz();
       } else {
         this.toastr.error('Unable to delete!', 'Error!');
       }
@@ -115,10 +137,10 @@ export class QuizzesComponent implements OnInit {
   }
 
   checkAccess() {
-    let isAdmin = localStorage.getItem("admin");
-    let isTeacher = localStorage.getItem("teacher");
-    let isStudent = localStorage.getItem("student");
-    let isLoggedin = localStorage.getItem("LoggedIn");
+    let isLoggedin = this.storageService.getLocalStorage("LoggedIn");
+    let isAdmin = this.storageService.getLocalStorage("admin");
+    let isTeacher = this.storageService.getLocalStorage("teacher");
+    let isStudent = this.storageService.getLocalStorage("student");
     if (isLoggedin == "true") {
       this.LoggedIn = true;
     } else {

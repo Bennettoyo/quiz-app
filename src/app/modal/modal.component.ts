@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../services/modal.service';
 import { ToastrService } from 'ngx-toastr';
+import { StorageService } from '../services/storage.service';
 
 
 @Component({
@@ -41,7 +42,7 @@ export class ModalComponent {
     { name: '11', img: './assets/education-img/music.jpg' },
   ];
 
-  constructor(public activeModal: NgbActiveModal, public modalsService: ModalService, private toastr: ToastrService) { }
+  constructor(public activeModal: NgbActiveModal, public modalsService: ModalService, private toastr: ToastrService, public storageService: StorageService) { }
 
   ngOnInit() {
   }
@@ -52,13 +53,14 @@ export class ModalComponent {
       this.undefinedOrEmpty(this.quizDesc) &&
       this.undefinedOrEmpty(this.quizType)) {
       this.getImage();
-      this.activeModal.close('Close click')
+      this.activeModal.close('Close click');
       this.quizDataObject = {
         quizPic: this.quizPic,
         quizName: this.quizName,
         quizDesc: this.quizDesc,
         quizType: this.quizType
       }
+      this.storageService.setLocalStorage("modalDataPassed", "true");
       this.modalsService.getModalData(this.quizDataObject);
     } else {
       this.toastr.error('Please fill in all inputs!', 'Error!');
@@ -79,7 +81,7 @@ export class ModalComponent {
       this.undefinedOrEmpty(this.quizDesc) &&
       this.undefinedOrEmpty(this.quizType)) {
       this.getImage();
-      this.activeModal.close('Close click')
+      this.activeModal.close('Close click');
       this.quizDataObject = {
         ID: this.ID,
         quizPic: this.quizPic,
@@ -88,6 +90,7 @@ export class ModalComponent {
         quizType: this.quizType,
         isEdit: true
       }
+      this.storageService.setLocalStorage("modalDataPassed", "true");
       this.modalsService.getModalData(this.quizDataObject);
     } else {
       this.toastr.error('Please fill in all inputs!', 'Error!');
@@ -95,11 +98,12 @@ export class ModalComponent {
   }
 
   deleteQuiz() {
-    this.activeModal.close('Close click')
+    this.activeModal.close('Close click');
     this.quizDataObject = {
       ID: this.ID,
       isDelete: true
     }
+    this.storageService.setLocalStorage("modalDataPassed", "true");
     this.modalsService.getModalData(this.quizDataObject);
   }
 

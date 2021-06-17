@@ -1,18 +1,23 @@
-<div class="card m-20">
+<div class="card m-20 m-b-30">
     <img class="card-img-top" src="{{element.Image}}" alt="Card image cap">
     <div class="card-body card-body-height">
         <h5 class="card-title">{{element.QuizName}}</h5>
         <p class="card-text">{{element.Description}}</p>
-        <!-- Show depending on what permission there is -->
+        <p *ngIf="finalScore >= 0 && studentAccess" [ngClass]="finalScore >= 4 ? 'green' : 'red'"
+            class="card-text bold">
+            Current Score: {{finalScore}}/10</p>
     </div>
     <div class="card-footer">
-        <a *ngIf="adminAccess" (click)="viewandEditQuiz(element.ID)" class="btn btn-primary white">Edit Questions
-            <i class="far fa-eye"></i></a>
-        <a *ngIf="adminAccess" (click)="editQuiz()" class="btn btn-primary white float-right">Edit <i
-                class="far fa-edit"></i></a>
-        <a *ngIf="teacherAccess" (click)="viewandEditQuiz(element.ID)" class="btn btn-primary white">Questions & Answers
-            <i class="far fa-eye"></i></a>
-        <a *ngIf="studentAccess" (click)="viewandEditQuiz(element.ID)" class="btn btn-primary white">Answer Questions
-            <i class="fas fa-running"></i></a>
+        <button *ngIf="adminAccess" (click)="viewandEditQuiz(element.ID)" class="btn btn-outline-primary">Edit
+            Questions
+            <i class="far fa-eye"></i></button>
+        <button *ngIf="adminAccess" (click)="editQuiz()" class="btn btn-outline-primary float-right">Edit
+            <i class="far fa-edit"></i></button>
+        <button *ngIf="teacherAccess" (click)="viewandEditQuiz(element.ID)" class="btn btn-outline-primary">Questions &
+            Answers <i class="far fa-eye"></i></button>
+        <button *ngIf="studentAccess" (click)="viewandEditQuiz(element.ID)" class="btn btn-outline-primary">Answer
+            Questions <i class="fas fa-running"></i></button>
     </div>
 </div>
+
+<!-- <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" (click)="checkLoginDetails()">Login</button> -->

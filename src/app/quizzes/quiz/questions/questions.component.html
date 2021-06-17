@@ -8,45 +8,74 @@
                 </a>
             </li>
             <li>
-                <a [ngClass]="questionNumber == 1 ? 'sidebar-item-selected' : ''"
+                <a *ngIf="adminAccess || teacherAccess" [ngClass]="questionNumber == 1 ? 'sidebar-item-selected' : ''"
                     (click)="setQuestionNumber(1)">Question
+                    1</a>
+                <a *ngIf="studentAccess" [ngClass]="questionNumber == 1 ? 'sidebar-item-selected' : ''">Question
                     1</a>
             </li>
             <li>
-                <a [ngClass]="questionNumber == 2 ? 'sidebar-item-selected' : ''"
-                    (click)="setQuestionNumber(2)">Question 2</a>
+                <a *ngIf="adminAccess || teacherAccess" [ngClass]="questionNumber == 2 ? 'sidebar-item-selected' : ''"
+                    (click)="setQuestionNumber(2)">Question
+                    2</a>
+                <a *ngIf="studentAccess" [ngClass]="questionNumber == 2 ? 'sidebar-item-selected' : ''">Question
+                    2</a>
             </li>
             <li>
-                <a [ngClass]="questionNumber == 3 ? 'sidebar-item-selected' : ''"
-                    (click)="setQuestionNumber(3)">Question 3</a>
+                <a *ngIf="adminAccess || teacherAccess" [ngClass]="questionNumber == 3 ? 'sidebar-item-selected' : ''"
+                    (click)="setQuestionNumber(3)">Question
+                    3</a>
+                <a *ngIf="studentAccess" [ngClass]="questionNumber == 3 ? 'sidebar-item-selected' : ''">Question
+                    3</a>
             </li>
             <li>
-                <a [ngClass]="questionNumber == 4 ? 'sidebar-item-selected' : ''"
-                    (click)="setQuestionNumber(4)">Question 4</a>
+                <a *ngIf="adminAccess || teacherAccess" [ngClass]="questionNumber == 4 ? 'sidebar-item-selected' : ''"
+                    (click)="setQuestionNumber(4)">Question
+                    4</a>
+                <a *ngIf="studentAccess" [ngClass]="questionNumber == 4 ? 'sidebar-item-selected' : ''">Question
+                    4</a>
             </li>
             <li>
-                <a [ngClass]="questionNumber == 5 ? 'sidebar-item-selected' : ''"
-                    (click)="setQuestionNumber(5)">Question 5</a>
+                <a *ngIf="adminAccess || teacherAccess" [ngClass]="questionNumber == 5 ? 'sidebar-item-selected' : ''"
+                    (click)="setQuestionNumber(5)">Question
+                    5</a>
+                <a *ngIf="studentAccess" [ngClass]="questionNumber == 5 ? 'sidebar-item-selected' : ''">Question
+                    5</a>
             </li>
             <li>
-                <a [ngClass]="questionNumber == 6 ? 'sidebar-item-selected' : ''"
-                    (click)="setQuestionNumber(6)">Question 6</a>
+                <a *ngIf="adminAccess || teacherAccess" [ngClass]="questionNumber == 6 ? 'sidebar-item-selected' : ''"
+                    (click)="setQuestionNumber(6)">Question
+                    6</a>
+                <a *ngIf="studentAccess" [ngClass]="questionNumber == 6 ? 'sidebar-item-selected' : ''">Question
+                    6</a>
             </li>
             <li>
-                <a [ngClass]="questionNumber == 7 ? 'sidebar-item-selected' : ''"
-                    (click)="setQuestionNumber(7)">Question 7</a>
+                <a *ngIf="adminAccess || teacherAccess" [ngClass]="questionNumber == 7 ? 'sidebar-item-selected' : ''"
+                    (click)="setQuestionNumber(7)">Question
+                    7</a>
+                <a *ngIf="studentAccess" [ngClass]="questionNumber == 7 ? 'sidebar-item-selected' : ''">Question
+                    7</a>
             </li>
             <li>
-                <a [ngClass]="questionNumber == 8 ? 'sidebar-item-selected' : ''"
-                    (click)="setQuestionNumber(8)">Question 8</a>
+                <a *ngIf="adminAccess || teacherAccess" [ngClass]="questionNumber == 8 ? 'sidebar-item-selected' : ''"
+                    (click)="setQuestionNumber(8)">Question
+                    8</a>
+                <a *ngIf="studentAccess" [ngClass]="questionNumber == 8 ? 'sidebar-item-selected' : ''">Question
+                    8</a>
             </li>
             <li>
-                <a [ngClass]="questionNumber == 9 ? 'sidebar-item-selected' : ''"
-                    (click)="setQuestionNumber(9)">Question 9</a>
+                <a *ngIf="adminAccess || teacherAccess" [ngClass]="questionNumber == 9 ? 'sidebar-item-selected' : ''"
+                    (click)="setQuestionNumber(9)">Question
+                    9</a>
+                <a *ngIf="studentAccess" [ngClass]="questionNumber == 9 ? 'sidebar-item-selected' : ''">Question
+                    9</a>
             </li>
             <li>
-                <a [ngClass]="questionNumber == 10 ? 'sidebar-item-selected' : ''"
-                    (click)="setQuestionNumber(10)">Question 10</a>
+                <a *ngIf="adminAccess || teacherAccess" [ngClass]="questionNumber == 10 ? 'sidebar-item-selected' : ''"
+                    (click)="setQuestionNumber(10)">Question
+                    10</a>
+                <a *ngIf="studentAccess" [ngClass]="questionNumber == 10 ? 'sidebar-item-selected' : ''">Question
+                    10</a>
             </li>
         </ul>
     </div>
@@ -76,7 +105,7 @@
                                 and tick
                                 if correct answer.</label>
                             <label *ngIf="teacherAccess || studentAccess" class="custom-control-label darkgray"
-                                for="customCheck1">{{firstAnswer}}</label>
+                                for="customCheck1">a. {{firstAnswer}}</label>
                             <input *ngIf="adminAccess" type="text" class="form-control" [(ngModel)]="firstAnswer">
                         </div>
                     </div>
@@ -89,7 +118,7 @@
                                 and tick
                                 if correct answer.</label>
                             <label *ngIf="teacherAccess || studentAccess" class="custom-control-label darkgray"
-                                for="customCheck2">{{secondAnswer}}</label>
+                                for="customCheck2">b. {{secondAnswer}}</label>
                             <input *ngIf="adminAccess" type="text" class="form-control" [(ngModel)]="secondAnswer">
                         </div>
                     </div>
@@ -102,7 +131,7 @@
                                 and tick
                                 if correct answer.</label>
                             <label *ngIf="teacherAccess || studentAccess" class="custom-control-label darkgray"
-                                for="customCheck3">{{thirdAnswer}}</label>
+                                for="customCheck3">c. {{thirdAnswer}}</label>
                             <input *ngIf="adminAccess" type="text" class="form-control" [(ngModel)]="thirdAnswer">
                         </div>
                     </div>
@@ -115,7 +144,7 @@
                                 and tick
                                 if correct answer.</label>
                             <label *ngIf="teacherAccess || studentAccess" class="custom-control-label darkgray"
-                                for="customCheck4">{{fourthAnswer}}</label>
+                                for="customCheck4">d. {{fourthAnswer}}</label>
                             <input *ngIf="adminAccess" type="text" class="form-control" [(ngModel)]="fourthAnswer">
                         </div>
                     </div>

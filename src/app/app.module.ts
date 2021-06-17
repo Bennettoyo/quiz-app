@@ -18,6 +18,7 @@ import { QuizComponent } from './quizzes/quiz/quiz.component';
 import { ModalComponent } from './modal/modal.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { QuestionsComponent } from './quizzes/quiz/questions/questions.component';
+import { BannerComponent } from './components/banner/banner.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { QuestionsComponent } from './quizzes/quiz/questions/questions.component
     QuizzesComponent,
     QuizComponent,
     ModalComponent,
-    QuestionsComponent
+    QuestionsComponent,
+    BannerComponent
   ],
   imports: [
     BrowserModule,

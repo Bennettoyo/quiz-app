@@ -1,3 +1,4 @@
 <div *ngIf="LoggedIn" class="row card-deck">
     <app-quiz class="col-12 col-lg-4" [quizElement]="quiz" *ngFor="let quiz of quizzes"></app-quiz>
 </div>
+<app-banner *ngIf="!LoggedIn && !isSmallerDevice"></app-banner>

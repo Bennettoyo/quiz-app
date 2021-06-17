@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpService } from 'src/app/services/http.service';
 import { ModalService } from 'src/app/services/modal.service';
+import { StorageService } from 'src/app/services/storage.service';
 
 @Component({
   selector: 'app-header',
@@ -17,7 +18,7 @@ export class HeaderComponent implements OnInit {
   public username: any = "";
   public password: any = "";
 
-  constructor(private modalService: NgbModal, public modalsService: ModalService, public httpService: HttpService, private router: Router) { }
+  constructor(private modalService: NgbModal, public modalsService: ModalService, public httpService: HttpService, private router: Router, public storageService: StorageService) { }
 
   addModal() {
     this.modalsService.addModal();
@@ -27,15 +28,15 @@ export class HeaderComponent implements OnInit {
     this.httpService.get("quiz/getAccountDetails?Username=" + this.username + "&Password=" + this.password).subscribe((rs: any) => {
       if (rs.length > 0) {
         let loginResults = rs[0];
-        localStorage.setItem("LoggedIn", "true");
+        this.storageService.setLocalStorage("LoggedIn", "true");
         if (loginResults.Username == "admin") {
-          localStorage.setItem("admin", "true");
+          this.storageService.setLocalStorage("admin", "true");
           this.adminAccess = true;
         } else if (loginResults.Username == "teacher") {
-          localStorage.setItem("teacher", "true");
+          this.storageService.setLocalStorage("teacher", "true");
           this.teacherAccess = true;
         } else if (loginResults.Username == "student") {
-          localStorage.setItem("student", "true");
+          this.storageService.setLocalStorage("student", "true");
           this.studentAccess = true;
         }
       }
@@ -47,10 +48,10 @@ export class HeaderComponent implements OnInit {
   }
 
   login() {
-    let isLoggedin = localStorage.getItem("LoggedIn");
-    let isAdmin = localStorage.getItem("admin");
-    let isTeacher = localStorage.getItem("teacher");
-    let isStudent = localStorage.getItem("student");
+    let isLoggedin = this.storageService.getLocalStorage("LoggedIn");
+    let isAdmin = this.storageService.getLocalStorage("admin");
+    let isTeacher = this.storageService.getLocalStorage("teacher");
+    let isStudent = this.storageService.getLocalStorage("student");
     if (isLoggedin == "true") {
       this.loggedIn = true;
     } else {
@@ -74,10 +75,10 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    localStorage.removeItem("LoggedIn");
-    localStorage.removeItem("admin");
-    localStorage.removeItem("teacher");
-    localStorage.removeItem("student");
+    this.storageService.removeLocalStorage("LoggedIn")
+    this.storageService.removeLocalStorage("admin")
+    this.storageService.removeLocalStorage("teacher")
+    this.storageService.removeLocalStorage("student")
     this.goQuizzes();
   }
 

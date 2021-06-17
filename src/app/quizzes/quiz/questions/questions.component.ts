@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpService } from 'src/app/services/http.service';
 import { Router } from "@angular/router";
 import { ToastrService } from 'ngx-toastr';
+import { StorageService } from 'src/app/services/storage.service';
 
 
 
@@ -15,6 +16,7 @@ export class QuestionsComponent implements OnInit {
   public quizDescription = "";
   public question = "";
   public questionNumber = 1;
+  public userTotalScore = 0;
   public quizID = "";
   public firstAnswer = "";
   public isFirstAnswerCorrect;
@@ -34,7 +36,7 @@ export class QuestionsComponent implements OnInit {
   public studentAccess: any = false;
 
 
-  constructor(public httpService: HttpService, private router: Router, private toastr: ToastrService) { }
+  constructor(public httpService: HttpService, private router: Router, private toastr: ToastrService, public storageService: StorageService) { }
 
   ngOnInit(): void {
     this.getQuizData();
@@ -81,19 +83,19 @@ export class QuestionsComponent implements OnInit {
         }
       }
     }, (err) => {
-      console.log(err);
+      this.toastr.error('Could not get data.', 'Error!');
     });
   }
 
   getQuizData() {
-    this.quizID = sessionStorage.getItem("quizID");
+    this.quizID = this.storageService.getSessionStorage("quizID");
     this.httpService.get("quiz/getQuiz?ID=" + this.quizID).subscribe((rs: any) => {
       this.quizData = rs[0];
       this.quizHeader = this.quizData.QuizName;
       this.quizDescription = this.quizData.Description;
       this.getQuestionData();
     }, (err) => {
-      console.log(err);
+      this.toastr.error('Could not get data.', 'Error!');
     });
   }
 
@@ -152,7 +154,7 @@ export class QuestionsComponent implements OnInit {
           this.toastr.error('Could not submit', 'Error!');
         });
       } else {
-        this.toastr.error('Please tick off at least two answers!', 'Error!');
+        this.toastr.error('Please tick off at least one answer!', 'Error!');
       }
     } else {
       this.toastr.error('Please fill out the question and all the answers!', 'Error!');
@@ -173,7 +175,7 @@ export class QuestionsComponent implements OnInit {
     if (this.isFourthAnswerCorrect) {
       counter++;
     }
-    if (counter > 1) {
+    if (counter >= 1) {
       return true;
     } else {
       return false;
@@ -183,24 +185,66 @@ export class QuestionsComponent implements OnInit {
   teacherAndStudentNextQuestion() {
     if (this.studentAccess) {
       if (this.moreThanOneAnswer()) {
+        this.checkIfAnswerCorrect();
         this.emptyInputsAndAlertUser();
+
       } else {
-        this.toastr.error('Please tick off at least two answers!', 'Oops!');
+        this.toastr.error('Please tick off at least one answer.', 'Oops!');
       }
     } else if (this.teacherAccess) {
       this.emptyInputsAndAlertUser();
     }
   }
 
+  checkIfAnswerCorrect() {
+    this.httpService.get("quiz/checkIfAnswerCorrect?QuizId=" + this.quizID +
+      "&QuestionNumber=" + this.questionNumber +
+      "&IsFirstAnswerCorrect=" + this.isFirstAnswerCorrect +
+      "&IsSecondAnswerCorrect=" + this.isSecondAnswerCorrect +
+      "&IsThirdAnswerCorrect=" + this.isThirdAnswerCorrect +
+      "&isFourthAnswerCorrect=" + this.isFourthAnswerCorrect
+    ).subscribe((rs: any) => {
+      if (rs == 1) {
+        this.userTotalScore += 1;
+        // console.log(this.userTotalScore);
+        this.toastr.success('Your Answer is correct.', 'Well done!');
+      } else {
+        this.toastr.error('Your Answer is incorrect.');
+      }
+    }, (err) => {
+      this.toastr.error('Could not check.', 'Error!');
+    });
+  }
+
   completedQuiz() {
+    if (this.studentAccess) {
+      this.checkIfAnswerCorrect();
+      this.storageService.setLocalStorage(this.quizHeader, this.userTotalScore.toString());
+      this.toastr.success('You have scored ' + this.userTotalScore + "/10", 'Well done!');
+    }
     this.goQuizzes();
   }
 
   adminCompletedQuiz() {
-    this.newQuestionAndAnswers();
-    if (this.finalQuestion) {
-      this.toastr.success('Make sure you have filled all 10 questions.', 'Saved your quiz!');
-      this.goQuizzes();
+    if (
+      this.question != "" &&
+      this.firstAnswer != "" &&
+      this.secondAnswer != "" &&
+      this.thirdAnswer != "" &&
+      this.fourthAnswer != ""
+    ) {
+      let moreThanOneAnswer = this.moreThanOneAnswer();
+      if (moreThanOneAnswer) {
+        this.newQuestionAndAnswers();
+        if (this.finalQuestion) {
+          this.toastr.success('Make sure you have filled all 10 questions.', 'Saved your quiz!');
+          this.goQuizzes();
+        }
+      } else {
+        this.toastr.error('Please tick off at least one answer!', 'Error!');
+      }
+    } else {
+      this.toastr.error('Please fill out the question and all the answers!', 'Error!');
     }
   }
 
@@ -210,9 +254,9 @@ export class QuestionsComponent implements OnInit {
 
 
   checkAccess() {
-    let isAdmin = localStorage.getItem("admin");
-    let isTeacher = localStorage.getItem("teacher");
-    let isStudent = localStorage.getItem("student");
+    let isAdmin = this.storageService.getLocalStorage("admin");
+    let isTeacher = this.storageService.getLocalStorage("teacher");
+    let isStudent = this.storageService.getLocalStorage("student");
     if (isAdmin == "true") {
       this.adminAccess = true;
     } else {
