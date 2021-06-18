@@ -83,7 +83,6 @@ export class QuizzesComponent implements OnInit {
       Image: this.quizDataForm.quizPic,
       Status: 1
     }).subscribe((rs: any) => {
-      debugger;
       // console.log(rs);
       if (rs != 0) {
         this.storageService.setSessionStorage("quizID", rs);
@@ -92,6 +91,7 @@ export class QuizzesComponent implements OnInit {
         this.goQuestions();
       } else {
         this.toastr.error('Quiz name already taken.', 'Error!');
+        setTimeout(function () { location.reload(); }, 500);
       }
     }, (err: any) => {
       this.toastr.error('Error!');

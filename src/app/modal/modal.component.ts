@@ -62,6 +62,7 @@ export class ModalComponent {
       }
       this.storageService.setLocalStorage("modalDataPassed", "true");
       this.modalsService.getModalData(this.quizDataObject);
+      console.log("has passed to modalService");
     } else {
       this.toastr.error('Please fill in all inputs!', 'Error!');
     }

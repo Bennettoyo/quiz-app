@@ -10,6 +10,7 @@ import { timeout } from 'rxjs/operators';
 export class HttpService {
 
   private server = 'http://localhost:51730/';
+  // private server = 'https://jackbennetto.co.uk/quizmanager/';
   private host = this.server + 'api/';
 
 
