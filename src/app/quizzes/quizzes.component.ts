@@ -25,6 +25,7 @@ export class QuizzesComponent implements OnInit {
 
   ngOnInit(): void {
     let windowWidth = window.innerWidth;
+    // Checks to see if smaller screen
     if (windowWidth < 1100) {
       this.isSmallerDevice = true;
     }

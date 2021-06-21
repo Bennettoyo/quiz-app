@@ -12,7 +12,6 @@ export class ModalService {
   modalData$ = this.modalDataSource.asObservable();
 
   constructor(private modalService: NgbModal) {
-    // this.modalData$ = this.modalDataSource.asObservable();
   }
 
   addModal() {
@@ -33,14 +32,8 @@ export class ModalService {
   }
 
   getModalData(object) {
-    // debugger;
-    // this.modalData$ = of(<any>[]);
     this.modalDataSource.next(object);
     this.modalData$.source.observers = [];
-    // this.modalData$.source.observers += this.modalDataSource;
-    // this.modalDataSource = new Subject<string>();
-    // this.modalData$ = this.modalDataSource.asObservable();
-    // console.log(this.modalData$)
   }
 
 

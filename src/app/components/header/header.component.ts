@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(private modalService: NgbModal, public modalsService: ModalService, public httpService: HttpService, private router: Router, public storageService: StorageService) { }
 
+  // Add new quiz
   addModal() {
     this.modalsService.addModal();
   }

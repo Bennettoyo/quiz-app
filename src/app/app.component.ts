@@ -14,14 +14,6 @@ export class AppComponent {
   constructor(public httpService: HttpService) { }
 
   ngOnInit() {
-    // this.getQuizData();
   }
 
-  // getQuizData() {
-  //   this.httpService.get("quiz/getQuizzes").subscribe((rs: any) => {
-  //     this.quizData = rs;
-  //   }, (err) => {
-  //     console.log(err);
-  //   });
-  // }
 }

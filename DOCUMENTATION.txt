@@ -1,0 +1,36 @@
+
+
+
+TOASTR
+
+Toastr used for messaging - https://www.npmjs.com/package/ngx-toastr
+npm install ngx-toastr --save && npm install @angular/animations --save
+
+
+
+CONFIRMATION POPOVER
+
+Confirmation popover used for double checking if the user wants to proceed - https://mattlewis92.github.io/angular-confirmation-popover/docs/
+npm install angular-confirmation-popover
+
+
+
+
+BOOTSTRAP
+
+Used for modal and styles - https://ng-bootstrap.github.io/#/getting-started
+ng add @ng-bootstrap/ng-bootstrap
+
+
+
+
+CRYPTO JS 
+
+Used for encrypting local storage and session storage - https://www.npmjs.com/package/crypto-js
+import * as CryptoJS from 'crypto-js'; & npm install crypto-js
+
+
+
+
+
+ 

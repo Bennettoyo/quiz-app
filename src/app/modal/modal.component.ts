@@ -27,8 +27,8 @@ export class ModalComponent {
   cancelClicked = false;
 
 
+  // images that are assigned to a subject 
   educational_images = [
-    // USE A FILTER FILL IN REST
     { name: '1', img: './assets/education-img/english.jpg' },
     { name: '2', img: './assets/education-img/maths.jpg' },
     { name: '3', img: './assets/education-img/science.jpg' },
@@ -108,6 +108,7 @@ export class ModalComponent {
     this.modalsService.getModalData(this.quizDataObject);
   }
 
+  // Assigns image to a subject 
   getImage() {
     let image = this.educational_images.find((x: any) => x.name == this.quizType);
     if (image) {
